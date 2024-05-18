@@ -71,7 +71,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             const { token } = response.data.data;
             const { id, name, document, phone_number, email_verified_at, profile_photo_url, type } = response.data.data.user;
 
-            setCookie(undefined, '@bitzen.token', token, {
+            setCookie(undefined, '@bitzenpet.token', token, {
                 maxAge: 60 * 60 * 24 * 30, //expira em 1 mes
                 patch: '/'
             })
@@ -117,9 +117,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
             console.log("response")
             console.log(response)
 
-            await signIn({ email, password })
+            //await signIn({ email, password })
 
-            // Router.push('/login');
+            Router.push('/login');
 
         } catch (err) {
             console.log('Erro ao cadastrar', err);

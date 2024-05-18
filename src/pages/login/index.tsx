@@ -6,6 +6,7 @@ import { Box, Button, Checkbox, Flex, Input, Text } from "@chakra-ui/react";
 import iconImg from "../../../public/images/icon.png"
 import Router from "next/router";
 import { AuthContext } from "../../context/AuthContext";
+import { canSSRGuest } from "@/src/utils/canSSRGuest";
 
 const Login = () => {
     const { signIn } = useContext(AuthContext)
@@ -95,3 +96,12 @@ const Login = () => {
 };
 
 export default Login;
+
+//rota protegida, somente usuário não logado
+export const getServerSideProps = canSSRGuest(async (ctx) => {
+    return {
+        props: {
+
+        }
+    }
+})

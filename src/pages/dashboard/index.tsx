@@ -6,6 +6,7 @@ import { FiSearch, FiPlusCircle, FiEye, FiTrash2 } from 'react-icons/fi';
 import iconImg from "../../../public/images/icon.png";
 import dogimg from "../../../public/images/dog.png";
 import Router from "next/router";
+import { canSSRAuth } from "@/src/utils/canSSRAuth";
 
 function Dashboard() {
     const pets = [
@@ -114,3 +115,13 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+
+//rota protegida, somente usuário logado
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+    return {
+        props: {
+
+        }
+    }
+})

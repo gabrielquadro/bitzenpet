@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Box, Button, Checkbox, Flex, Input, Text } from "@chakra-ui/react";
 import iconImg from "../../../public/images/icon.png"
 import { AuthContext } from "../../context/AuthContext";
+import { canSSRGuest } from "@/src/utils/canSSRGuest";
 
 const Register = () => {
     const { signUp } = useContext(AuthContext)
@@ -21,14 +22,6 @@ const Register = () => {
     };
 
     async function handleSignUp() {
-        // console.log({
-        //     name,
-        //     email,
-        //     document,
-        //     phone_number,
-        //     password,
-        //     password_confirmation,
-        // })
         await signUp({
             name,
             email,
@@ -180,3 +173,12 @@ const Register = () => {
 };
 
 export default Register;
+
+//rota protegida, somente usuário não logado
+export const getServerSideProps = canSSRGuest(async (ctx) => {
+    return {
+        props: {
+
+        }
+    }
+})
