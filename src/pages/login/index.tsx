@@ -1,11 +1,14 @@
+import { useState, useContext } from "react";
 import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
 import { Box, Button, Checkbox, Flex, Input, Text } from "@chakra-ui/react";
 import iconImg from "../../../public/images/icon.png"
-import { useState } from "react";
+import Router from "next/router";
+import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
+    const { signIn } = useContext(AuthContext)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isChecked, setIsChecked] = useState(false);
@@ -13,6 +16,11 @@ const Login = () => {
     const handleCheckboxClick = () => {
         setIsChecked(!isChecked);
     };
+
+    async function handleSignIn() {
+        //Router.push('/dashboard')
+        await signIn({ email, password })
+    }
 
     return (
         <>
@@ -79,7 +87,7 @@ const Login = () => {
                             </Text>
                         </Flex>
 
-                        <Button bg="button.default" width="full" color='button.txt'>Entrar na plataforma</Button>
+                        <Button bg="button.default" width="full" color='button.txt' onClick={handleSignIn}>Entrar na plataforma</Button>
                     </Box>
                 </Box>
             </Flex>
