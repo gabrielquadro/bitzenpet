@@ -5,6 +5,7 @@ import { Flex, Text, Link, Button, Icon, Input } from '@chakra-ui/react';
 import { FiEdit } from 'react-icons/fi';
 import { CgLogOut } from "react-icons/cg";
 import { AuthContext } from "../../context/AuthContext";
+import { canSSRAuth } from "@/src/utils/canSSRAuth";
 
 function Profile() {
     const { user } = useContext(AuthContext)
@@ -86,3 +87,12 @@ function Profile() {
 }
 
 export default Profile;
+
+//rota protegida, somente usuário logado
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+    return {
+        props: {
+
+        }
+    }
+})

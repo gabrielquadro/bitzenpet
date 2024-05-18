@@ -3,6 +3,7 @@ import Head from "next/head"
 import TopBar from '@/src/components/Topbar';
 import { Flex, Text, Input, Button, Image ,Textarea } from '@chakra-ui/react';
 import dogimg from "../../../public/images/dog.png";
+import { canSSRAuth } from "@/src/utils/canSSRAuth";
 
 function Edit() {
     const [name, setName] = useState("");
@@ -94,3 +95,12 @@ function Edit() {
 }
 
 export default Edit;
+
+//rota protegida, somente usuário logado
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+    return {
+        props: {
+
+        }
+    }
+})

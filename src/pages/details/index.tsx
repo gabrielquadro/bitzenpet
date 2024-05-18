@@ -5,6 +5,7 @@ import { Flex, Text, Link, Button, Icon, Image } from '@chakra-ui/react';
 import { FiEdit, FiArrowLeft } from 'react-icons/fi';
 import dogimg from "../../../public/images/dog.png";
 import Router from "next/router";
+import { canSSRAuth } from "@/src/utils/canSSRAuth";
 
 function Details() {
     return (
@@ -83,3 +84,12 @@ function Details() {
 }
 
 export default Details;
+
+//rota protegida, somente usuário logado
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+    return {
+        props: {
+
+        }
+    }
+})
