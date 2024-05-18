@@ -1,5 +1,5 @@
 import { useState, ReactNode, createContext, useEffect } from "react";
-//import { destroyCookie, setCookie, parseCookies } from "nookies";
+import { destroyCookie, setCookie, parseCookies } from "nookies";
 import Router from "next/router";
 
 interface AuthContextData {
@@ -35,6 +35,16 @@ interface SignInProps {
 }
 
 export const AuthContext = createContext({} as AuthContextData)
+
+export function signOut() {
+    console.log('SignOut')
+    try {
+        destroyCookie(null, '@bitzenpet.token', { path: '/' }) //destroi token para todas rotas
+        Router.push('/login');
+    } catch (err) {
+        console.log('Erro ao sair');
+    }
+}
 
 export function AuthProvider({ children }: AuthProviderProps) {
 
