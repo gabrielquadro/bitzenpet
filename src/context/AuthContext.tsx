@@ -1,7 +1,7 @@
 import { useState, ReactNode, createContext, useEffect } from "react";
 import { destroyCookie, setCookie, parseCookies } from "nookies";
 import Router from "next/router";
-
+import { api } from "../services/apiClient";
 interface AuthContextData {
     user: UserProps;
     isAuthenticated: boolean;
@@ -10,7 +10,7 @@ interface AuthContextData {
 
 
 interface UserProps {
-    id: string;
+    id: number;
     name: string;
     email: string;
     document: string;
@@ -52,10 +52,43 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const isAuthenticated = !!user;
 
     async function signIn({ email, password }: SignInProps) {
-        console.log({
-            email,
-            password
-        })
+        try {
+            const response = await api.post('/login', {
+                email,
+                password
+            })
+
+            console.log(response.data.data)
+
+            const { token } = response.data.data;
+            const { id, name, document, phone_number, email_verified_at, profile_photo_url, type } = response.data.data.user;
+
+            setCookie(undefined, '@bitzen.token', token, {
+                maxAge: 60 * 60 * 24 * 30, //expira em 1 mes
+                patch: '/'
+            })
+
+            setUser({
+                id,
+                name,
+                email,
+                profile_photo_url,
+                type,
+                document,
+                phone_number,
+                email_verified_at
+            })
+
+            console.log("user")
+            console.log(user)
+
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+            Router.push('/dashboard');
+
+        } catch (err) {
+            console.log('Erro ao entrar', err);
+        }
     }
 
     return (
