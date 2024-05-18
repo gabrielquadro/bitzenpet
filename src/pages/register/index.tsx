@@ -1,30 +1,48 @@
+import { useState, useContext } from "react";
 import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
 import { Box, Button, Checkbox, Flex, Input, Text } from "@chakra-ui/react";
 import iconImg from "../../../public/images/icon.png"
-import { useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const Register = () => {
+    const { signUp } = useContext(AuthContext)
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [passwordConfirm, setPasswordConfirm] = useState("");
-    const [cpf, setCpf] = useState("");
-    const [cellphone, setCellphone] = useState("");
+    const [password_confirmation, setPasswordConfirm] = useState("");
+    const [document, setDocument] = useState("");
+    const [phone_number, setPhoneNumber] = useState("");
     const [isChecked, setIsChecked] = useState(false);
 
     const handleCheckboxClick = () => {
         setIsChecked(!isChecked);
     };
 
+    async function handleSignUp() {
+        // console.log({
+        //     name,
+        //     email,
+        //     document,
+        //     phone_number,
+        //     password,
+        //     password_confirmation,
+        // })
+        await signUp({
+            name,
+            email,
+            document,
+            phone_number,
+            password,
+            password_confirmation,
+        })
+    }
+
     const handleCpfChange = (e: { target: { value: any; }; }) => {
         let value = e.target.value;
-        value = value.replace(/\D/g, "");
-        value = value.replace(/(\d{3})(\d)/, "$1.$2");
-        value = value.replace(/(\d{3})(\d)/, "$1.$2");
-        value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-        setCpf(value);
+        const cpfOnlyNumbers = value.replace(/\D/g, '');
+        setDocument(cpfOnlyNumbers);
     };
 
     return (
@@ -79,7 +97,7 @@ const Register = () => {
                                 <Input
                                     type="text"
                                     placeholder="Insira o seu CPF"
-                                    value={cpf}
+                                    value={document}
                                     onChange={handleCpfChange}
                                     maxLength={14}
                                     mb={4}
@@ -94,8 +112,8 @@ const Register = () => {
                                 <Input
                                     type="number"
                                     placeholder="Seu telefone"
-                                    value={cellphone}
-                                    onChange={(e) => setCellphone(e.target.value)}
+                                    value={phone_number}
+                                    onChange={(e) => setPhoneNumber(e.target.value)}
                                     mb={4}
                                     size="lg"
                                 />
@@ -106,7 +124,7 @@ const Register = () => {
                         <Flex alignItems="center" justifyContent="space-between" mb={5}>
                             <Flex flexDirection='column' alignItems="flex-start" justifyContent="flex-start" width='45%'>
 
-                                <Text fontSize="16px" mb={2}>CPF</Text>
+                                <Text fontSize="16px" mb={2}>Senha</Text>
 
                                 <Input
                                     type="password"
@@ -125,7 +143,7 @@ const Register = () => {
                                 <Input
                                     type="password"
                                     placeholder="Repita a senha"
-                                    value={passwordConfirm}
+                                    value={password_confirmation}
                                     onChange={(e) => setPasswordConfirm(e.target.value)}
                                     mb={4}
                                     size="lg"
@@ -153,7 +171,7 @@ const Register = () => {
 
                         </Flex>
 
-                        <Button bg="button.default" width="full" color='button.txt'>Cadastrar</Button>
+                        <Button bg="button.default" width="full" color='button.txt' onClick={handleSignUp}>Cadastrar</Button>
                     </Box>
                 </Box>
             </Flex>

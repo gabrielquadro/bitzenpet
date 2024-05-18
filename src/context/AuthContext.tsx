@@ -6,6 +6,7 @@ interface AuthContextData {
     user: UserProps;
     isAuthenticated: boolean;
     signIn: (credencials: SignInProps) => Promise<void>
+    signUp: (credencials: SignUpProps) => Promise<void>
 }
 
 
@@ -34,6 +35,15 @@ interface SignInProps {
     password: string;
 }
 
+interface SignUpProps {
+    name: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+    document: string;
+    phone_number: string;
+}
+
 export const AuthContext = createContext({} as AuthContextData)
 
 export function signOut() {
@@ -58,8 +68,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 password
             })
 
-            console.log(response.data.data)
-
             const { token } = response.data.data;
             const { id, name, document, phone_number, email_verified_at, profile_photo_url, type } = response.data.data.user;
 
@@ -79,9 +87,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 email_verified_at
             })
 
-            console.log("user")
-            console.log(user)
-
             api.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
             Router.push('/dashboard');
@@ -91,11 +96,42 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     }
 
+    async function signUp({
+        name,
+        email,
+        document,
+        phone_number,
+        password,
+        password_confirmation
+    }: SignUpProps) {
+        try {
+            const response = await api.post('/register', {
+                name,
+                email,
+                document,
+                phone_number,
+                password,
+                password_confirmation
+            })
+
+            console.log("response")
+            console.log(response)
+
+            await signIn({ email, password })
+
+            // Router.push('/login');
+
+        } catch (err) {
+            console.log('Erro ao cadastrar', err);
+        }
+    }
+
     return (
         <AuthContext.Provider value={{
             user,
             isAuthenticated,
-            signIn
+            signIn,
+            signUp,
         }}>
             {children}
         </AuthContext.Provider>

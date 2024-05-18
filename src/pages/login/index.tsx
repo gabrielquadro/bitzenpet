@@ -18,7 +18,6 @@ const Login = () => {
     };
 
     async function handleSignIn() {
-        //Router.push('/dashboard')
         await signIn({ email, password })
     }
 
