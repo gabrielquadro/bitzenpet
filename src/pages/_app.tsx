@@ -8,13 +8,22 @@ const colors = {
     titleBlack: '#262626',
     default: '#404040',
     danger: '#E93939',
+    neutral: '#595959',
+    light: '#8C8C8C'
   },
   button: {
     default: '#00B8C4',
-    txt: '#FFFFFF'
+    txt: '#FFFFFF',
+    gray: '#E6E6E6',
+    red: '#E93939'
   },
   border: {
     default: '#CCCCCC',
+    line : '#E6E6E6'
+  },
+  bg:{
+    gray: '#f4f4f4',
+    default: '#E6E6E6'
   }
 }
 
