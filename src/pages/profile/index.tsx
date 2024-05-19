@@ -1,27 +1,81 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Head from "next/head"
 import TopBar from '@/src/components/Topbar';
-import { Flex, Text, Link, Button, Icon, Input } from '@chakra-ui/react';
+import { Flex, Text, Link, Button, Icon, Input, Alert, AlertIcon, useDisclosure, Slide } from '@chakra-ui/react';
 import { FiEdit } from 'react-icons/fi';
 import { CgLogOut } from "react-icons/cg";
 import { AuthContext } from "../../context/AuthContext";
 import { canSSRAuth } from "@/src/utils/canSSRAuth";
+import { setupAPIClient } from '../../services/api'
+import { motion } from 'framer-motion';
 
-function Profile() {
-    const { user } = useContext(AuthContext)
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
+interface UserProfileprops {
+    id: string,
+    name: string,
+    email: string,
+    profile_photo_url: string,
+}
+
+interface Profileprops {
+    userData: UserProfileprops,
+}
+
+export default function Profile({ userData }: Profileprops) {
+    const { logoutUser, user } = useContext(AuthContext)
+    const [name, setName] = useState(userData.name ? userData.name : "");
+    const [email, setEmail] = useState(userData.email ? userData.email : "");
+    const [showAlert, setShowAlert] = useState(false);
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     useEffect(() => {
-        console.log(user)
+        console.log(userData)
     });
+
+    async function handleLogout() {
+        await logoutUser();
+    }
+
+    async function handleUpdateUser() {
+        if (name === '' || email === '') {
+            return;
+        }
+
+        try {
+            const apiClient = setupAPIClient();
+            await apiClient.put('/user', {
+                name: name,
+                email: email
+            })
+
+            setShowAlert(true);
+            onOpen();
+            // Oculta o alerta após 3 segundos
+            setTimeout(() => {
+                setShowAlert(false);
+                onClose();
+            }, 3000);
+
+        } catch (err) {
+            console.log('Erro ao salvar.', err);
+        }
+
+    }
 
     return (
         <>
+
             <Head>
                 <title>Bitzen Pet - Meu perfil</title>
             </Head>
-            <TopBar></TopBar>
+            {/* <TopBar></TopBar> */}
+            {showAlert && (
+                <Slide direction="top" in={isOpen} style={{ zIndex: 10 }}>
+                    <Alert status='success' mb={4} alignItems='center' justifyContent='center'>
+                        <AlertIcon />
+                        Dados alterados com sucesso!
+                    </Alert>
+                </Slide>
+            )}
             <Flex height='100vh' width='100%' flexDirection='column' alignItems="flex-start" justifyContent="flex-start">
                 <Flex width='100%' alignItems="center" justifyContent="center" pt={5} pb={5}>
                     <Flex alignItems="flex-start" justifyContent="flex-start" width='80%'>
@@ -55,7 +109,7 @@ function Profile() {
                             size="lg"
                         />
 
-                        <Button mt={6} bg="button.default" width="full" color='button.txt'>Salvar</Button>
+                        <Button mt={6} bg="button.default" width="full" color='button.txt' onClick={handleUpdateUser}>Salvar</Button>
                     </Flex>
 
                     <Flex p={6} mt={6} width='40%' flexDirection='row' alignItems="center" justifyContent="space-between" bg='white'>
@@ -69,12 +123,16 @@ function Profile() {
                     </Flex>
 
                     <Flex p={6} mt={6} width='40%' flexDirection='row' alignItems="flex-start" justifyContent="flex-start" bg='white'>
-                        <Link href="/edit">
-                            <Flex flexDirection='row' alignItems='center'>
-                                <Icon size={24} color='txt.danger' as={CgLogOut} />
-                                <Text color='txt.danger' ml={2}>Sair da minha conta</Text>
-                            </Flex>
-                        </Link>
+                        <Button
+                            variant="unstyled"
+                            onClick={handleLogout}
+                            display="flex"
+                            alignItems="center"
+                            color="txt.danger"
+                        >
+                            <Icon size={24} as={CgLogOut} />
+                            <Text ml={2}>Sair da minha conta</Text>
+                        </Button>
                     </Flex>
 
                 </Flex>
@@ -86,13 +144,39 @@ function Profile() {
     );
 }
 
-export default Profile;
-
 //rota protegida, somente usuário logado
 export const getServerSideProps = canSSRAuth(async (ctx) => {
-    return {
-        props: {
+    try {
+        const apiClient = setupAPIClient(ctx);
+        const response = await apiClient.get('/user')
 
+        if (response.data.data && response.data.data.id) {
+            const userData = {
+                id: response.data.data.id,
+                name: response.data.data.name,
+                email: response.data.data.email,
+                profile_photo_url: response.data.data.profile_photo_url,
+            }
+
+            return {
+                props: {
+                    userData: userData,
+                }
+            }
+        } else {
+            console.log('Dados de usuário incompletos ou ausentes.')
+            return {
+                props: {
+                    userData: null,
+                }
+            }
+        }
+    } catch (err) {
+        console.log('Erro ao carregar informações do usuário:', err)
+        return {
+            props: {
+                userData: null,
+            }
         }
     }
 })

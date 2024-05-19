@@ -1,12 +1,28 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Flex, Box, Text, Avatar, Image } from '@chakra-ui/react';
+import dogImg from "../../../public/images/dog.png";
+import defaultUserImg from "../../../public/images/defaultUser.jpg";
 import iconImg from "../../../public/images/icon.png";
 import { Tabs, TabList, Tab } from '@chakra-ui/react';
 import Link from 'next/link';
 import { GoTriangleDown } from "react-icons/go";
 import Router from "next/router";
+import { AuthContext } from "../../context/AuthContext";
+import { canSSRAuth } from "@/src/utils/canSSRAuth";
+import { setupAPIClient } from '../../services/api'
 
-function TopBar() {
+interface UserProfileprops {
+    id: string,
+    name: string,
+    email: string,
+    profile_photo_url: string,
+}
+
+interface Profileprops {
+    userData: UserProfileprops,
+}
+
+export default function TopBar() {
     return (
         <>
             <Flex alignItems="center" justifyContent="center" width='100%' borderBottom="1px solid #E6E6E6" mb={4} mt={4}>
@@ -35,9 +51,8 @@ function TopBar() {
                             </TabList>
                         </Tabs>
                     </Flex>
-
                     <Box cursor='pointer' display='flex' flexDirection='row' alignItems='center' justifyContent='center' onClick={() => Router.push('/profile')}>
-                        <Avatar size="sm" name="Nome do Usuário" src="../../../public/images/icon.png" />
+                        <Avatar size="sm" name="Not user" src={defaultUserImg.src} />
                         <GoTriangleDown color='#8C8C8C' />
                     </Box>
                 </Flex>
@@ -47,4 +62,39 @@ function TopBar() {
     );
 }
 
-export default TopBar;
+//rota protegida, somente usuário logado
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+    try {
+        const apiClient = setupAPIClient(ctx);
+        const response = await apiClient.get('/user')
+
+        if (response.data.data && response.data.data.id) {
+            const userData = {
+                id: response.data.data.id,
+                name: response.data.data.name,
+                email: response.data.data.email,
+                profile_photo_url: response.data.data.profile_photo_url,
+            }
+
+            return {
+                props: {
+                    userData: userData,
+                }
+            }
+        } else {
+            console.log('Dados de usuário incompletos ou ausentes.')
+            return {
+                props: {
+                    userData: null,
+                }
+            }
+        }
+    } catch (err) {
+        console.log('Erro ao carregar informações do usuário:', err)
+        return {
+            props: {
+                userData: null,
+            }
+        }
+    }
+})

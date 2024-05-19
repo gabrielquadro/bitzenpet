@@ -1,21 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from "next/head"
 import TopBar from '@/src/components/Topbar';
-import { Flex, Text, Input, Button, Image ,Textarea } from '@chakra-ui/react';
+import { Flex, Text, Input, Button, Image, Textarea } from '@chakra-ui/react';
 import dogimg from "../../../public/images/dog.png";
 import { canSSRAuth } from "@/src/utils/canSSRAuth";
+import { useRouter } from 'next/router';
 
 function Edit() {
     const [name, setName] = useState("");
     const [color, setColor] = useState("");
     const [birthday, setBirthday] = useState("");
     const [about, setAbout] = useState("");
+    const router = useRouter();
+    const { id } = router.query;
+
+    useEffect(() => {
+        async function fetchPet() {
+            //setLoading(true);
+            try {
+                console.log('id')
+                console.log(id)
+            } catch (err) {
+                console.error(err);
+            } finally {
+                // setLoading(false);
+            }
+        }
+        fetchPet();
+    }, []);
+
     return (
         <>
             <Head>
                 <title>Bitzen Pet - Editar pet</title>
             </Head>
-            <TopBar></TopBar>
+            {/* <TopBar></TopBar> */}
             <Flex height='100vh' width='100%' flexDirection='column' alignItems="flex-start" justifyContent="flex-start">
                 <Flex width='100%' alignItems="center" justifyContent="center" pt={5} pb={5}>
                     <Flex alignItems="flex-start" justifyContent="flex-start" width='80%'>

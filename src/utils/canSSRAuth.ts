@@ -15,8 +15,6 @@ export function canSSRAuth<P>(fn: GetServerSideProps<P>) {
         console.log(token)
 
         if (!token) {
-            console.log("a2")
-
             return {
                 redirect: {
                     destination: '/login',
@@ -26,13 +24,9 @@ export function canSSRAuth<P>(fn: GetServerSideProps<P>) {
         }
 
         try {
-            console.log("a3")
-
             return await fn(ctx);
         } catch (err) {
             if (err instanceof AuthTokenError) {
-                console.log("a3")
-
                 destroyCookie(ctx, '@bitzenpet.token', { path: '/' })
                 return {
                     redirect: {

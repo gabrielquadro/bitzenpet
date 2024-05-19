@@ -7,6 +7,7 @@ interface AuthContextData {
     isAuthenticated: boolean;
     signIn: (credencials: SignInProps) => Promise<void>
     signUp: (credencials: SignUpProps) => Promise<void>
+    logoutUser: () => Promise<void>
 }
 
 
@@ -61,6 +62,40 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<UserProps>();
     const isAuthenticated = !!user;
 
+    //verificação de token
+    useEffect(() => {
+        const { '@bitzenpet.token': token } = parseCookies();
+
+        if (token) {
+            api.get('/user').then(response => {
+                const {
+                    id,
+                    name,
+                    email,
+                    profile_photo_url,
+                    type,
+                    document,
+                    phone_number,
+                    email_verified_at
+                } = response.data;
+                setUser({
+                    id,
+                    name,
+                    email,
+                    profile_photo_url,
+                    type,
+                    document,
+                    phone_number,
+                    email_verified_at
+                })
+            })
+                .catch(() => {
+                    signOut();
+                })
+        }
+
+    }, [])
+
     async function signIn({ email, password }: SignInProps) {
         try {
             const response = await api.post('/login', {
@@ -72,6 +107,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
             const { id, name, document, phone_number, email_verified_at, profile_photo_url, type } = response.data.data.user;
 
             setCookie(undefined, '@bitzenpet.token', token, {
+                maxAge: 60 * 60 * 24 * 30, //expira em 1 mes
+                patch: '/'
+            })
+            setCookie(undefined, '@bitzenpet.photo', profile_photo_url, {
                 maxAge: 60 * 60 * 24 * 30, //expira em 1 mes
                 patch: '/'
             })
@@ -126,12 +165,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     }
 
+    async function logoutUser() {
+        try {
+            destroyCookie(null, '@bitzenpet.token', { path: '/' })
+            setUser(null)
+            Router.push('/login');
+        } catch (err) {
+            console.log('Erro ao sair', err);
+        }
+    }
+
     return (
         <AuthContext.Provider value={{
             user,
             isAuthenticated,
             signIn,
             signUp,
+            logoutUser
         }}>
             {children}
         </AuthContext.Provider>
