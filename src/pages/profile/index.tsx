@@ -76,13 +76,13 @@ export default function Profile({ userData }: Profileprops) {
                     </Alert>
                 </Slide>
             )}
-            <Flex height='100vh' width='100%' flexDirection='column' alignItems="flex-start" justifyContent="flex-start">
+            <Flex height="100vw" width='100%' flexDirection='column' alignItems="flex-start" justifyContent="flex-start">
                 <Flex width='100%' alignItems="center" justifyContent="center" pt={5} pb={5}>
                     <Flex alignItems="flex-start" justifyContent="flex-start" width='80%'>
                         <Text fontSize="24px" fontWeight='bold'>Meu perfil</Text>
                     </Flex>
                 </Flex>
-                <Flex height='100vh' width='100%' flexDirection='column' alignItems="center" justifyContent="flex-start" bg='bg.gray'>
+                <Flex height="100vw" width='100%' flexDirection='column' alignItems="center" justifyContent="flex-start" bg='bg.gray'>
                     <Flex p={6} mt={6} width='40%' flexDirection='column' alignItems="flex-start" justifyContent="flex-start" bg='white'>
                         <Text fontWeight='bold' width='100%' fontSize="16px" mb={2} >Meus dados</Text>
                         <Text mt={3} width='100%' fontSize="16px" mb={2} borderBottom="1px solid #CCCCCC"></Text>

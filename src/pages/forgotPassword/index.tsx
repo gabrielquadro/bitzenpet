@@ -5,27 +5,35 @@ import Link from "next/link"
 import { Box, Button, Checkbox, Flex, Input, Text } from "@chakra-ui/react";
 import iconImg from "../../../public/images/icon.png"
 import Router from "next/router";
-import { AuthContext } from "../../context/AuthContext";
 import { canSSRGuest } from "@/src/utils/canSSRGuest";
+import { FiArrowLeft } from 'react-icons/fi';
+import { setupAPIClient } from '../../services/api'
 
-const Login = () => {
-    const { signIn } = useContext(AuthContext)
+const ForgotPassword = () => {
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [isChecked, setIsChecked] = useState(false);
 
-    const handleCheckboxClick = () => {
-        setIsChecked(!isChecked);
-    };
+    async function handleSendEmail() {
+        if (email === '') {
+            return;
+        }
 
-    async function handleSignIn() {
-        await signIn({ email, password })
+        try {
+            const apiClient = setupAPIClient();
+            await apiClient.post('/forgot-password', {
+                email: email
+            })
+
+            Router.push(`/forgotPassword/token/${email}`)
+
+        } catch (err) {
+            console.log('Erro ao salvar.', err);
+        }
     }
 
     return (
         <>
             <Head>
-                <title>Bitzen Pet - Login</title>
+                <title>Bitzen Pet - Esqueceu sua senha?</title>
             </Head>
             <Flex height="100vh" alignItems="center" justifyContent="center">
                 <Box p={8} width="600px" boxShadow="lg">
@@ -44,17 +52,28 @@ const Login = () => {
                         </Flex>
                     </Box>
                     <Box mt={10} textAlign="left">
+
+                        <Link href="/login">
+                            <Button
+                                display='flex'
+                                alignItems='center'
+                                justifyContent='center'
+                                bgColor='transparent'
+                                color='txt.blue'
+                                p={0}
+                                mb={2}
+                            >
+                                <FiArrowLeft size={24} color="txt.blue" />
+                                Voltar
+                            </Button>
+                        </Link>
+
                         <Text fontSize="24px" mb={2} fontWeight='bold' color='txt.titleBlack' >
-                            Entrar na plataforma
+                            Esqueceu sua senha?
                         </Text>
 
                         <Flex alignItems="center" justifyContent="flex-start" mt={5} mb={5}>
-                            <Text fontSize="16px">Não tem uma conta?</Text>
-                            <Link href="/register">
-                                <Text ml={1} fontSize="16px" fontWeight='bold' color='txt.blue' cursor='pointer'>
-                                    Cadastre-se gratuitamente
-                                </Text>
-                            </Link>
+                            <Text fontSize="16px">Vamos te ajudar nisso! Primeiro, digite seu e-mail cadastrado ao criar a sua conta.</Text>
                         </Flex>
 
 
@@ -65,30 +84,11 @@ const Login = () => {
                             placeholder="Seu email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            mb={4}
+                            mb={6}
                             size="lg"
                         />
 
-                        <Text fontSize="16px" mb={2}>Senha</Text>
-
-                        <Input
-                            type="password"
-                            placeholder="Sua senha"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            mb={4}
-                            size="lg"
-                        />
-                        <Flex alignItems="center" justifyContent="space-between" mb={5}>
-                            <Checkbox colorScheme="teal" >Mantenha-me conectado</Checkbox>
-                            <Link href="/forgotPassword">
-                                <Text fontSize="16px" fontWeight='bold' color='txt.blue' cursor='pointer'>
-                                    Esqueçeu sua senha?
-                                </Text>
-                            </Link>
-                        </Flex>
-
-                        <Button bg="button.default" width="full" color='button.txt' onClick={handleSignIn}>Entrar na plataforma</Button>
+                        <Button bg="button.default" width="full" color='button.txt' onClick={handleSendEmail}>Próximo</Button>
                     </Box>
                 </Box>
             </Flex>
@@ -96,7 +96,7 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default ForgotPassword;
 
 //rota protegida, somente usuário não logado
 export const getServerSideProps = canSSRGuest(async (ctx) => {

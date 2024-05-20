@@ -51,6 +51,7 @@ export function signOut() {
     console.log('SignOut')
     try {
         destroyCookie(null, '@bitzenpet.token', { path: '/' }) //destroi token para todas rotas
+        destroyCookie(null, '@bitzenpet.photo', { path: '/' }) //destroi token para todas rotas
         Router.push('/login');
     } catch (err) {
         console.log('Erro ao sair');
@@ -168,6 +169,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     async function logoutUser() {
         try {
             destroyCookie(null, '@bitzenpet.token', { path: '/' })
+            destroyCookie(null, '@bitzenpet.photo', { path: '/' })
             setUser(null)
             Router.push('/login');
         } catch (err) {

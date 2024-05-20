@@ -6,6 +6,7 @@ import { Box, Button, Checkbox, Flex, Input, Text } from "@chakra-ui/react";
 import iconImg from "../../../public/images/icon.png"
 import { AuthContext } from "../../context/AuthContext";
 import { canSSRGuest } from "@/src/utils/canSSRGuest";
+import { FiArrowLeft } from 'react-icons/fi';
 
 const Register = () => {
     const { signUp } = useContext(AuthContext)
@@ -16,20 +17,45 @@ const Register = () => {
     const [document, setDocument] = useState("");
     const [phone_number, setPhoneNumber] = useState("");
     const [isChecked, setIsChecked] = useState(false);
+    const [error, setError] = useState("");
 
     const handleCheckboxClick = () => {
         setIsChecked(!isChecked);
     };
 
     async function handleSignUp() {
-        await signUp({
-            name,
-            email,
-            document,
-            phone_number,
-            password,
-            password_confirmation,
-        })
+
+        setError("");
+
+        if (!name || !email || !document || !phone_number || !password || !password_confirmation) {
+            setError("Por favor, preencha todos os campos.");
+            return;
+        }
+        if (password !== password_confirmation) {
+            setError("As senhas não coincidem.");
+            return;
+        }
+        if (password.length < 8) {
+            setError("A senha deve ter no mínimo 8 caracteres.");
+            return;
+        }
+        if (phone_number.length < 12) {
+            setError("O número de telefone deve ter no mínimo 12 caracteres.");
+            return;
+        }
+
+        try {
+            await signUp({
+                name,
+                email,
+                document,
+                phone_number,
+                password,
+                password_confirmation,
+            });
+        } catch (error: any) {
+            setError("Erro ao registrar. Por favor, tente novamente.");
+        }
     }
 
     const handleCpfChange = (e: { target: { value: any; }; }) => {
@@ -45,10 +71,28 @@ const Register = () => {
             </Head>
             <Flex height="100vh" alignItems="center" justifyContent="center">
                 <Box p={8} width="800px" boxShadow="lg">
-
+                    <Link href="/login">
+                        <Button
+                            display='flex'
+                            alignItems='center'
+                            justifyContent='center'
+                            bgColor='transparent'
+                            color='txt.blue'
+                            p={0}
+                            mb={2}
+                        >
+                            <FiArrowLeft size={24} color="txt.blue" />
+                            Voltar
+                        </Button>
+                    </Link>
                     <Text fontSize="40px" mb={2} fontWeight='bold' color='txt.titleBlack' >
                         Cadastre-se
                     </Text>
+                    {error && (
+                        <Text color="red.500" mb={2}>
+                            {error}
+                        </Text>
+                    )}
                     <Box mt={4} textAlign="left">
                         <Flex alignItems="center" justifyContent="flex-start" mt={5} mb={5}>
                             <Text fontSize="16px" color='txt.light'>Já possui uma conta?</Text>

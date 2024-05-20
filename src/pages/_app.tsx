@@ -1,46 +1,3 @@
-// import type { AppProps } from "next/app";
-// import { ChakraProvider } from '@chakra-ui/react'
-// import { extendTheme } from '@chakra-ui/react'
-// import { AuthProvider } from '../context/AuthContext'
-
-// const colors = {
-//   txt: {
-//     blue: '#00B8C4',
-//     titleBlack: '#262626',
-//     default: '#404040',
-//     danger: '#E93939',
-//     neutral: '#595959',
-//     light: '#8C8C8C'
-//   },
-//   button: {
-//     default: '#00B8C4',
-//     txt: '#FFFFFF',
-//     gray: '#E6E6E6',
-//     red: '#E93939'
-//   },
-//   border: {
-//     default: '#CCCCCC',
-//     line: '#E6E6E6'
-//   },
-//   bg: {
-//     gray: '#f4f4f4',
-//     default: '#E6E6E6'
-//   }
-// }
-
-// const theme = extendTheme({ colors })
-
-// export default function App({ Component, pageProps }: AppProps) {
-//   return (
-//     <ChakraProvider theme={theme}>
-//       <AuthProvider>
-//         <Component {...pageProps} />
-//       </AuthProvider>
-//     </ChakraProvider>
-//   )
-// }
-
-
 import type { AppProps } from "next/app";
 import App from "next/app";
 import { ChakraProvider, Flex, Box, Tabs, TabList, Tab, Text, Avatar } from '@chakra-ui/react';
@@ -88,7 +45,6 @@ function MyApp({ Component, pageProps, photo }: AppProps & { photo: string }) {
       case 0:
         router.push('/dashboard');
         break;
-      // Adicione mais casos conforme necessário para outras abas
       default:
         break;
     }
@@ -102,14 +58,23 @@ function MyApp({ Component, pageProps, photo }: AppProps & { photo: string }) {
       case `/details/`:
       case `/edit/`:
         return 0;
-      // Adicione mais casos conforme necessário
       default:
-        return -1; // Nenhuma aba ativa
+        return -1;
     }
   };
 
+  // const isAuthRoute = () => {
+  //   return ['/login', '/register', '/forgotPassword' , '/forgotPassword/token/[token]', '/forgotPassword/newPassword/[token]'].includes(router.pathname);
+  // };
+
   const isAuthRoute = () => {
-    return ['/login', '/register'].includes(router.pathname);
+    return [
+      '/login',
+      '/register',
+      '/forgotPassword',
+      '/forgotPassword/token/[token]',
+      '/forgotPassword/newPassword/[token]',
+    ].some(route => router.pathname.startsWith(route));
   };
 
   return (
@@ -140,12 +105,11 @@ function MyApp({ Component, pageProps, photo }: AppProps & { photo: string }) {
                         <Text>Início</Text>
                       </Link>
                     </Tab>
-                    {/* Adicione mais abas conforme necessário */}
                   </TabList>
                 </Tabs>
               </Flex>
               <Box cursor='pointer' display='flex' flexDirection='row' alignItems='center' justifyContent='center' onClick={() => router.push('/profile')}>
-                <Avatar size="md" name="Not USer" src={photo || ""} /> {/* Atualize com o caminho correto da imagem */}
+                <Avatar size="md" name="Not USer" src={photo || ""} />
                 <GoTriangleDown color='#8C8C8C' />
               </Box>
             </Flex>
