@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Head from "next/head"
-import TopBar from '@/src/components/Topbar';
 import { Flex, Text, Link, Button, Icon, Input, Alert, AlertIcon, useDisclosure, Slide } from '@chakra-ui/react';
 import { FiEdit } from 'react-icons/fi';
 import { CgLogOut } from "react-icons/cg";
@@ -28,7 +27,7 @@ export default function Profile({ userData }: Profileprops) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     useEffect(() => {
-        console.log(userData)
+        
     });
 
     async function handleLogout() {
@@ -67,7 +66,6 @@ export default function Profile({ userData }: Profileprops) {
             <Head>
                 <title>Bitzen Pet - Meu perfil</title>
             </Head>
-            {/* <TopBar></TopBar> */}
             {showAlert && (
                 <Slide direction="top" in={isOpen} style={{ zIndex: 10 }}>
                     <Alert status='success' mb={4} alignItems='center' justifyContent='center'>
@@ -146,6 +144,7 @@ export default function Profile({ userData }: Profileprops) {
 
 //rota protegida, somente usuário logado
 export const getServerSideProps = canSSRAuth(async (ctx) => {
+    //renderização a partir do servidor
     try {
         const apiClient = setupAPIClient(ctx);
         const response = await apiClient.get('/user')

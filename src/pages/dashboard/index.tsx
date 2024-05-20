@@ -11,8 +11,8 @@ function Dashboard() {
     const [loading, setLoading] = useState(false);
     const [petData, setPetData] = useState([]);
     const [reload, setReload] = useState(false);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(4);
+    const [page, setPage] = useState(1); //pagina que está
+    const [totalPages, setTotalPages] = useState(1); //total de paginas da api
 
     async function fetchPets() {
         setLoading(true);
@@ -24,14 +24,13 @@ function Dashboard() {
                     search: searchQuery,
                 },
             });
-            console.log('API Response:', response.data); // Depurar a resposta da API
             setPetData(response.data.data.data);
+            //total de dados da api
             const total = response.data.data.total;
+            //dados por pagina
             const perPage = response.data.data.per_page;
-
+            //total de paginas que deve mostar para o usuário no fim da tabela
             const result = Math.ceil(total / perPage);
-
-            console.log(result)
 
             setTotalPages(result);
         } catch (err) {
@@ -45,6 +44,7 @@ function Dashboard() {
         fetchPets();
     }, [reload, page]);
 
+    //search volta pra page 1
     useEffect(() => {
         setPage(1)
         fetchPets();
@@ -60,6 +60,7 @@ function Dashboard() {
         }
     }
 
+    //nova página
     const handlePageChange = (newPage) => {
         if (newPage > 0 && newPage <= totalPages) {
             setPage(newPage);

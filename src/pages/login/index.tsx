@@ -4,7 +4,6 @@ import Image from "next/image"
 import Link from "next/link"
 import { Box, Button, Checkbox, Flex, Input, Text } from "@chakra-ui/react";
 import iconImg from "../../../public/images/icon.png"
-import Router from "next/router";
 import { AuthContext } from "../../context/AuthContext";
 import { canSSRGuest } from "@/src/utils/canSSRGuest";
 

@@ -7,13 +7,11 @@ import { AuthTokenError } from "../services/errors/AuthTokenError";
 
 export function canSSRAuth<P>(fn: GetServerSideProps<P>) {
     return async (ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<P>> => {
-        console.log("a1")
 
         const cookies = parseCookies(ctx);
         const token = cookies['@bitzenpet.token'];
 
-        console.log(token)
-
+        //caso não tenha token, então não está logado , volta pra login
         if (!token) {
             return {
                 redirect: {

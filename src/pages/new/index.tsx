@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import Head from "next/head"
-import TopBar from '@/src/components/Topbar';
 import { Flex, Text, Input, Button, Image, Textarea, Box, Icon, Alert, AlertIcon, useDisclosure, Slide } from '@chakra-ui/react';
 import { canSSRAuth } from "@/src/utils/canSSRAuth";
 import { BsCamera } from "react-icons/bs";
@@ -19,6 +18,7 @@ function New() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [error, setError] = useState("");
 
+    //captura imagem
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -27,7 +27,6 @@ function New() {
                 setImage(file);
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    console.log(reader.result)
                     setImageShow(reader.result);
                 };
                 reader.readAsDataURL(file);
@@ -46,13 +45,6 @@ function New() {
 
         try {
             const data = new FormData();
-            console.log({
-                name: name,
-                color: color,
-                birthdate: birthday,
-                description: about,
-                image: image
-            })
 
             data.append('name', name);
             data.append('color', color);
@@ -84,7 +76,6 @@ function New() {
             <Head>
                 <title>Bitzen Pet - Novo pet</title>
             </Head>
-            {/* <TopBar></TopBar> */}
             {showAlert && (
                 <Slide direction="top" in={isOpen} style={{ zIndex: 10 }}>
                     <Alert status='success' mb={4} alignItems='center' justifyContent='center'>

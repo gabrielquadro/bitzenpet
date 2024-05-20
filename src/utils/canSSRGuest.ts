@@ -8,6 +8,7 @@ export function canSSRGuest<P>(fn: GetServerSideProps<P>) {
         const cookies = parseCookies(ctx);
         const token = cookies['@bitzenpet.token'];
 
+        //caso logado não pode acessar telas iniciais como login , register e etc
         if (token) {
             return {
                 redirect: {

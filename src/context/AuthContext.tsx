@@ -10,7 +10,6 @@ interface AuthContextData {
     logoutUser: () => Promise<void>
 }
 
-
 interface UserProps {
     id: number;
     name: string;
@@ -21,7 +20,6 @@ interface UserProps {
     profile_photo_url: string;
     type: UserType;
 }
-
 export interface UserType {
     id: number;
     description: string;
@@ -35,7 +33,6 @@ interface SignInProps {
     email: string;
     password: string;
 }
-
 interface SignUpProps {
     name: string;
     email: string;
@@ -48,7 +45,6 @@ interface SignUpProps {
 export const AuthContext = createContext({} as AuthContextData)
 
 export function signOut() {
-    console.log('SignOut')
     try {
         destroyCookie(null, '@bitzenpet.token', { path: '/' }) //destroi token para todas rotas
         destroyCookie(null, '@bitzenpet.photo', { path: '/' }) //destroi token para todas rotas
@@ -153,11 +149,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 password,
                 password_confirmation
             })
-
-            console.log("response")
-            console.log(response)
-
-            //await signIn({ email, password })
 
             Router.push('/login');
 

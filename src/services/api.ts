@@ -5,8 +5,9 @@ import { signOut } from '../context/AuthContext'
 export function setupAPIClient(ctx = undefined) {
     let cookies = parseCookies(ctx);
 
+    //conexão com o banco e adição do token de verificação para as requisição
     const api = axios.create({
-        baseURL: process.env.NEXT_PUBLIC_API_URL,
+        baseURL: 'https://api.bitzen-pet.homologacao.bitzenwebsites.net/api',
         headers: {
             Authorization: `Bearer ${cookies['@bitzenpet.token']}`
         }

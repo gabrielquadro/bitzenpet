@@ -8,7 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { GoTriangleDown } from 'react-icons/go';
 import iconImg from "../../public/images/icon.png";
-import { destroyCookie, parseCookies } from "nookies";
+import { parseCookies } from "nookies";
 
 const colors = {
   txt: {
@@ -35,11 +35,13 @@ const colors = {
   }
 };
 
+//tema base
 const theme = extendTheme({ colors });
 
 function MyApp({ Component, pageProps, photo }: AppProps & { photo: string }) {
   const router = useRouter();
 
+  //evento mudança de tab
   const handleTabChange = (index: number) => {
     switch (index) {
       case 0:
@@ -50,6 +52,7 @@ function MyApp({ Component, pageProps, photo }: AppProps & { photo: string }) {
     }
   };
 
+  //rotas que estão dentro da tab início
   const getTabIndex = () => {
     switch (router.pathname) {
       case '/dashboard':
@@ -63,10 +66,7 @@ function MyApp({ Component, pageProps, photo }: AppProps & { photo: string }) {
     }
   };
 
-  // const isAuthRoute = () => {
-  //   return ['/login', '/register', '/forgotPassword' , '/forgotPassword/token/[token]', '/forgotPassword/newPassword/[token]'].includes(router.pathname);
-  // };
-
+  //rotas de autenticação que não devem aparecer a tab
   const isAuthRoute = () => {
     return [
       '/login',

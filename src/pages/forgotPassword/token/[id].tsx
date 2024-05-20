@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
@@ -18,7 +18,7 @@ const Token = () => {
     const [pin5, setPin5] = useState('');
     const [pin6, setPin6] = useState('');
     const router = useRouter();
-    const { id } = router.query;
+    const { id } = router.query; //pega parâmetro passado de outra tela
 
     async function handleVerify() {
         if (pin1 === '' || pin2 === '' || pin3 === '' || pin4 === '' || pin5 === '' || pin6 === '') {
@@ -28,17 +28,12 @@ const Token = () => {
 
         try {
             const token = pin1 + pin2 + pin3 + pin4 + pin5 + pin6;
-            const query = { id, token };
             const apiClient = setupAPIClient();
             await apiClient.post('/reset-password/token/validate', {
                 token: token,
                 email: id,
             })
             Router.push(`/forgotPassword/newPassword/${id}-${token}`)
-            // Router.push({
-            //     pathname: '/forgotPassword/token',
-            //     query: { id , token }
-            // });
 
         } catch (err) {
             console.log('Erro ao salvar.', err);

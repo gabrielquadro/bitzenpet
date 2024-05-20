@@ -1,5 +1,5 @@
 import Document, { Html, Head, Main, NextScript} from 'next/document'
-
+//fontes do projeto
 export default class MyDocument extends Document{
   render(): JSX.Element {
     return(

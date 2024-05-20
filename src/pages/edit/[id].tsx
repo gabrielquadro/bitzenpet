@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Head from "next/head"
-import TopBar from '@/src/components/Topbar';
 import { Flex, Text, Input, Button, Image, Textarea, Alert, AlertIcon, useDisclosure, Slide, Box, Icon } from '@chakra-ui/react';
 import { BsCamera } from "react-icons/bs";
 import { canSSRAuth } from "@/src/utils/canSSRAuth";
@@ -32,7 +31,6 @@ function Edit() {
     const [showAlertErr, setShowAlertErr] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const inputRef = useRef(null);
-    const [imageBlob, setImageBlob] = useState(null);
     const [error, setError] = useState("");
 
     useEffect(() => {
@@ -53,9 +51,6 @@ function Edit() {
                 fetchImageAndConvertToBlob(response.data.data.image_url)
                     .then((imageFile) => {
                         setImage(imageFile);
-
-                        console.log('Converted image file:', imageFile);
-                        // Agora você pode usar o arquivo da imagem conforme necessário
                     })
                     .catch((error) => {
                         console.error('Failed to fetch and convert image:', error);
@@ -90,6 +85,7 @@ function Edit() {
         }
     }
 
+    //captura imagem
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -103,7 +99,6 @@ function Edit() {
                 };
                 reader.readAsDataURL(file);
             } else {
-                // Lidar com o erro de tipo de arquivo inválido aqui
                 console.error('Tipo de arquivo inválido. A imagem deve ser do tipo: jpg, jpeg, png.');
             }
         }

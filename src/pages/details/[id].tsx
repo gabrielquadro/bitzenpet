@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Head from "next/head"
-import TopBar from '@/src/components/Topbar';
 import { Flex, Text, Link, Button, Icon, Image, Spinner, Box } from '@chakra-ui/react';
 import { FiEdit, FiArrowLeft } from 'react-icons/fi';
 import Router from "next/router";
@@ -18,7 +17,7 @@ interface Pet {
 
 function Details() {
     const router = useRouter();
-    const { id } = router.query;
+    const { id } = router.query; //parâmetro recebido da outra tela
     const [loading, setLoading] = useState(false);
     const [pet, setPet] = useState<Pet | undefined>();
 
@@ -49,7 +48,6 @@ function Details() {
                     <Head>
                         <title>Bitzen Pet - Pet</title>
                     </Head>
-                    {/* <TopBar></TopBar> */}
                     <Flex height="100vw" width='100%' flexDirection='column' alignItems="flex-start" justifyContent="flex-start">
                         <Flex width='100%' alignItems="center" justifyContent="center" pt={5} pb={5}>
                             <Flex alignItems="flex-start" justifyContent="flex-start" width='80%'>

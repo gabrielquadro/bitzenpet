@@ -15,17 +15,11 @@ const NewPassword = () => {
     const [password, setPassword] = useState("");
     const [password_confirmation, setPasswordConfirm] = useState("");
     const router = useRouter();
-    const { id } = router.query;
+    const { id } = router.query; //pega parâmetro passado de outra tela
     const [email, setEmail] = useState('');
     const [token, setToken] = useState('');
 
     async function handleSendEmail() {
-        console.log(id)
-
-        console.log({
-            email,
-            token
-        })
 
         try {
 
@@ -44,7 +38,6 @@ const NewPassword = () => {
     }
 
     useEffect(() => {
-        console.log(id)
         if (typeof id === 'string') {
             const [extractedId, extractedToken] = id.split('-');
             setEmail(extractedId);
@@ -75,7 +68,7 @@ const NewPassword = () => {
                     </Box>
                     <Box mt={10} textAlign="left">
 
-                        <Link href="/forgotPassword/token">
+                        <Link href="/forgotPassword">
                             <Button
                                 display='flex'
                                 alignItems='center'
