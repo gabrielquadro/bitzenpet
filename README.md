@@ -1,40 +1,58 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Projeto desenvolvido para o Desafio técnico - Bitzen Tecnologia
 
-## Getting Started
+Tecnologias: ReactJs, NextJs e chakra ui
 
-First, run the development server:
+Como inicializar:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- yarn dev
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Navegador: http://localhost:3000/login
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Login
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+![login](https://github.com/gabrielquadro/bitzenpet/assets/61526044/9a250031-52ea-4cad-b99f-9c323a12452f)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Cadastar
 
-## Learn More
+![register](https://github.com/gabrielquadro/bitzenpet/assets/61526044/463497eb-3e12-4771-b946-8c322eae8c18)
 
-To learn more about Next.js, take a look at the following resources:
+Esqueçi minha senha:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![esqueceu senha](https://github.com/gabrielquadro/bitzenpet/assets/61526044/2e669f48-38dc-4a9d-9ce0-3a10b04bf96a)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+![code](https://github.com/gabrielquadro/bitzenpet/assets/61526044/6b91f65c-301d-4109-9f96-4560e886fe13)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![senha](https://github.com/gabrielquadro/bitzenpet/assets/61526044/2dd036fa-8284-42e1-88c7-ffb881fefc39)
+
+
+Dashboard
+
+![dashboard1](https://github.com/gabrielquadro/bitzenpet/assets/61526044/f499a350-ac55-4f06-a4c7-d9ad17aaa1a0)
+
+![dashboard2](https://github.com/gabrielquadro/bitzenpet/assets/61526044/c54ba244-3605-47f7-92f6-c4bcc478b054)
+
+![search](https://github.com/gabrielquadro/bitzenpet/assets/61526044/fb48aebc-67e3-4199-86e7-b264123f10da)
+
+
+Adicionar pet
+
+![new](https://github.com/gabrielquadro/bitzenpet/assets/61526044/7ece5caa-0f31-483e-a8ea-c2c035bc44d1)
+
+Perfil
+
+![profile](https://github.com/gabrielquadro/bitzenpet/assets/61526044/e0806ab8-26ef-4036-86f7-184b679a300f)
+
+Detalhes do pet
+
+![details](https://github.com/gabrielquadro/bitzenpet/assets/61526044/bcdc7d06-537f-4758-a5ea-19b1a181eb39)
+
+Editar pet
+
+![edit](https://github.com/gabrielquadro/bitzenpet/assets/61526044/b4138f01-26f3-4816-b39f-a0c41f963a98)
+
+
+
+
