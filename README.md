@@ -1,5 +1,7 @@
 Projeto desenvolvido para o Desafio técnico - Bitzen Tecnologia
 
+Site: https://bitzenpet.netlify.app/login
+
 Tecnologias: ReactJs, NextJs e chakra ui
 
 Como inicializar:
