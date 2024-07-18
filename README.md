@@ -4,6 +4,8 @@ Site: https://bitzenpet.netlify.app/login
 
 Tecnologias: ReactJs, NextJs e chakra ui
 
+Instalação: npm install
+
 Como inicializar:
 
 - yarn dev
